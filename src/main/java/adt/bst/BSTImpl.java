@@ -1,4 +1,7 @@
+
 package adt.bst;
+
+import adt.bst.BSTNode.Builder;
 
 public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
@@ -19,50 +22,95 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public int height() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return recursiveHeight(this.root);
 	}
 
 	@Override
 	public BSTNode<T> search(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		return this.recursiveSearch(this.root, element);
 	}
 
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public void insert(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> newNode;
+		if (!this.isEmpty()) {
+			newNode = (BSTNode<T>) new BSTNode.Builder<T>()
+								.data(element)
+								.left(null)
+								.right(null)
+								.parent(null)
+								.build();
+			this.root = newNode;
+		} else {
+			this.recursiveInsert(this.root, element);
+		}
 	}
 
 	@Override
 	public BSTNode<T> maximum() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> result = null;
+		if (!this.isEmpty()) result = recursiveMaximum(this.root);
+		return result;
 	}
+
 
 	@Override
 	public BSTNode<T> minimum() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> result = null;
+		if (!this.isEmpty()) result = recursiveMinimum(this.root);
+		return result;
 	}
+
 
 	@Override
 	public BSTNode<T> sucessor(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> result = null;
+		BSTNode<T> node = this.search(element);
+		if (node != null) {
+			if (node.getRight() != null) {
+				result = this.recursiveMinimum((BSTNode<T>) node.getRight());
+			} else {
+				BSTNode<T> aux = (BSTNode<T>) node.getParent();
+				
+				while (aux != null && aux.getData().compareTo(node.getData()) == -1) {
+					aux = (BSTNode<T>) aux.getParent();
+				}
+				
+				result = aux;
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public BSTNode<T> predecessor(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> result = null;
+		BSTNode<T> node = this.search(element);
+		if (node != null) {
+			if (node.getLeft() != null) {
+				result = this.recursiveMaximum((BSTNode<T>) node.getLeft());
+			} else {
+				BSTNode<T> aux = (BSTNode<T>) node.getParent();
+				
+				while (aux != null && aux.getData().compareTo(node.getData()) == 1) {
+					aux = (BSTNode<T>) aux.getParent();
+				}
+				
+				result = aux;
+			}
+		}
+		return result;
 	}
 
 	@Override
 	public void remove(T element) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		BSTNode<T> toRemove = this.search(element);
+		
+		if (toRemove == this.root) {
+			this.root = null;
+		}
 	}
 
 	@Override
@@ -102,4 +150,67 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 		return result;
 	}
 
+	private int recursiveHeight(BSTNode<T> node) {
+		int result = -1;
+		
+		if (node != null) {
+			result = 1 + Math.max(
+					recursiveHeight((BSTNode<T>) node.getLeft()),
+					recursiveHeight((BSTNode<T>) node.getRight())
+					);
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	private void recursiveInsert(BSTNode<T> node, T element) {
+		if (node.getData().compareTo(element) == -1) {
+			if (node.getLeft() == null) {
+				BSTNode<T> newNode = (BSTNode<T>) new BSTNode.Builder<T>()
+						.data(element)
+						.left(null)
+						.right(null)
+						.parent(node)
+						.build();
+				node.setLeft(newNode);
+			} else {
+				recursiveInsert((BSTNode<T>) node.getLeft(), element);
+			}
+		} else {
+            if (node.getRight() == null) { 
+				BSTNode<T> newNode = (BSTNode<T>) new BSTNode.Builder<T>()
+						.data(element)
+						.left(null)
+						.right(null)
+						.parent(node)
+						.build();
+                node.setRight(newNode);
+            } else {
+            	recursiveInsert((BSTNode<T>) node.getRight(), element);
+            }
+        }
+	}
+	
+	private BSTNode<T> recursiveSearch(BSTNode<T> node, T element) {
+		BSTNode<T> result = null;
+		if (node != null) {
+			if(element.compareTo(node.getData()) == 0) result = node;
+			else if (element.compareTo(node.getData()) == -1)  {
+				result = this.recursiveSearch((BSTNode<T>) node.getLeft(), element);
+			} else result = this.recursiveSearch((BSTNode<T>) node.getRight(), element);
+		}
+		return result;
+	}
+	
+	private BSTNode<T> recursiveMinimum(BSTNode<T> node) {
+		BSTNode<T> result = node;
+		if (node.getLeft() != null) result = this.recursiveMinimum((BSTNode<T>) node.getLeft());
+		return result;
+	}
+	
+	private BSTNode<T> recursiveMaximum(BSTNode<T> node) {
+		BSTNode<T> result = node;
+		if (node.getRight() != null) result = this.recursiveMaximum((BSTNode<T>) node.getRight());
+		return result;
+	}
 }
