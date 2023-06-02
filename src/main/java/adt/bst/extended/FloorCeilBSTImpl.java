@@ -20,8 +20,20 @@ public class FloorCeilBSTImpl extends BSTImpl<Integer> implements FloorCeilBST {
 	}
 
 	private Integer floor(BSTNode<Integer> node, double numero) {
-		// TODO Auto-generated method stub
-		return null;
+		Integer result = null;
+		if (!node.isEmpty()) {
+			if (node.getData() == numero) {
+				result = node.getData();
+			} else if (node.getData() < numero) {
+				result = this.floor((BSTNode<Integer>) node.getRight(), numero);
+				if (result == null) {
+					result = node.getData();
+				}
+			} else {
+				result = this.floor((BSTNode<Integer>) node.getLeft(), numero);
+			}
+		}
+		return result;
 	}
 
 	@Override

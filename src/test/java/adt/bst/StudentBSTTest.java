@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import adt.bst.BSTImpl;
+import adt.bst.extended.FloorCeilBSTImpl;
 import adt.bt.BTNode;
 
 public class StudentBSTTest {
@@ -13,6 +14,7 @@ public class StudentBSTTest {
 	private BSTImpl<Integer> tree;
 	private BTNode<Integer> NIL = new BTNode<Integer>();
 	private SimpleBSTManipulationImpl<Integer> simpleBSTManipulationImpl;
+	private FloorCeilBSTImpl floorCeilBSTImpl;
 
 	private void fillTree() {
 		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
@@ -25,6 +27,7 @@ public class StudentBSTTest {
 	public void setUp() {
 		this.tree = new BSTImpl<Integer>();
 		this.simpleBSTManipulationImpl = new SimpleBSTManipulationImpl<Integer>();
+		this.floorCeilBSTImpl = new FloorCeilBSTImpl();
 	}
 
 	@Test
@@ -169,6 +172,19 @@ public class StudentBSTTest {
 	}
 	
 	@Test
+	public void testIsDifferent() {
+		BSTImpl<Integer> tree2 = new BSTImpl<Integer>();
+		fillTree();
+		
+		Integer[] array = { 6, 26, -32, 4, 8, 1, -3, 80, 15, 70, 250, -50 };
+		for (int i : array) {
+			tree2.insert(i);
+		}
+		
+		assertFalse(this.simpleBSTManipulationImpl.equals(tree, tree2));
+	}
+	
+	@Test
 	public void testIsSimilar() {
 		BSTImpl<Integer> tree2 = new BSTImpl<Integer>();
 		fillTree();
@@ -200,5 +216,19 @@ public class StudentBSTTest {
 		fillTree();
 		
 		assertEquals(new Integer(6), this.simpleBSTManipulationImpl.orderStatistic(tree, 6));
+	}
+	
+	@Test
+	public void testFloor1() {
+		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
+		
+		assertEquals(new Integer(0), this.floorCeilBSTImpl.floor(array, 1));
+	}
+	
+	@Test
+	public void testFloor260() {
+		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
+		
+		assertEquals(new Integer(260), this.floorCeilBSTImpl.floor(array, 1));
 	}
 }
