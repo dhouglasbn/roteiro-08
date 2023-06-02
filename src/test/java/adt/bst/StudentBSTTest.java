@@ -12,6 +12,7 @@ public class StudentBSTTest {
 
 	private BSTImpl<Integer> tree;
 	private BTNode<Integer> NIL = new BTNode<Integer>();
+	private SimpleBSTManipulationImpl<Integer> simpleBSTManipulationImpl;
 
 	private void fillTree() {
 		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
@@ -22,7 +23,8 @@ public class StudentBSTTest {
 
 	@Before
 	public void setUp() {
-		tree = new BSTImpl<>();
+		this.tree = new BSTImpl<Integer>();
+		this.simpleBSTManipulationImpl = new SimpleBSTManipulationImpl<Integer>();
 	}
 
 	@Test
@@ -151,5 +153,52 @@ public class StudentBSTTest {
 		assertEquals(new Integer(-40), tree.search(-40).getData());
 		assertEquals(new Integer(-34), tree.search(-34).getData());
 		assertEquals(NIL, tree.search(2534));
+	}
+	
+	@Test
+	public void testEquals() {
+		BSTImpl<Integer> tree2 = new BSTImpl<Integer>();
+		fillTree();
+		
+		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
+		for (int i : array) {
+			tree2.insert(i);
+		}
+		
+		assertTrue(this.simpleBSTManipulationImpl.equals(tree, tree2));
+	}
+	
+	@Test
+	public void testIsSimilar() {
+		BSTImpl<Integer> tree2 = new BSTImpl<Integer>();
+		fillTree();
+		
+		Integer[] array = { 6, 26, -32, 4, 8, 1, -3, 80, 15, 70, 250, -50 };
+		for (int i : array) {
+			tree2.insert(i);
+		}
+		
+		assertTrue(this.simpleBSTManipulationImpl.isSimilar(tree, tree2));
+	}
+	
+	@Test
+	public void test1StatisticOrder() {
+		fillTree();
+		
+		assertEquals(new Integer(-40), this.simpleBSTManipulationImpl.orderStatistic(tree, 1));
+	}
+	
+	@Test
+	public void test12StatisticOrder() {
+		fillTree();
+		
+		assertEquals(new Integer(232), this.simpleBSTManipulationImpl.orderStatistic(tree, 12));
+	}
+	
+	@Test
+	public void test6StatisticOrder() {
+		fillTree();
+		
+		assertEquals(new Integer(6), this.simpleBSTManipulationImpl.orderStatistic(tree, 6));
 	}
 }
