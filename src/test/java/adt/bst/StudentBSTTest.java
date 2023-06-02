@@ -229,6 +229,48 @@ public class StudentBSTTest {
 	public void testFloor260() {
 		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
 		
-		assertEquals(new Integer(260), this.floorCeilBSTImpl.floor(array, 1));
+		assertEquals(new Integer(232), this.floorCeilBSTImpl.floor(array, 260));
+	}
+	
+	@Test
+	public void testFloor12() {
+		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
+		
+		assertEquals(new Integer(12), this.floorCeilBSTImpl.floor(array, 12.4));
+	}
+	
+	@Test
+	public void testFloor67() {
+		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
+		
+		assertEquals(new Integer(67), this.floorCeilBSTImpl.floor(array, 67));
+	}
+	
+	@Test
+	public void testCeil1() {
+		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
+		
+		assertEquals(new Integer(2), this.floorCeilBSTImpl.ceil(array, 1));
+	}
+	
+	@Test
+	public void testCeilMinus50() {
+		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
+		
+		assertEquals(new Integer(-40), this.floorCeilBSTImpl.ceil(array, -50));
+	}
+	
+	@Test
+	public void testCeil12() {
+		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
+		
+		assertEquals(new Integer(23), this.floorCeilBSTImpl.ceil(array, 12.4));
+	}
+	
+	@Test
+	public void testCeil67() {
+		Integer[] array = { 6, 23, -34, 5, 9, 2, 0, 76, 12, 67, 232, -40 };
+		
+		assertEquals(new Integer(67), this.floorCeilBSTImpl.ceil(array, 67));
 	}
 }
